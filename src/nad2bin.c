@@ -7,37 +7,6 @@
 #include "projects.h"
 #define U_SEC_TO_RAD 4.848136811095359935899141023e-12
 
-/************************************************************************/
-/*                             swap_words()                             */
-/*                                                                      */
-/*      Convert the byte order of the given word(s) in place.           */
-/************************************************************************/
-
-static const int  byte_order_test = 1;
-#define IS_LSB	(((const unsigned char *) (&byte_order_test))[0] == 1)
-
-static void swap_words( void *data_in, int word_size, int word_count )
-
-{
-    int	word;
-    unsigned char *data = (unsigned char *) data_in;
-
-    for( word = 0; word < word_count; word++ )
-    {
-        int	i;
-        
-        for( i = 0; i < word_size/2; i++ )
-        {
-            unsigned char	t;
-            
-            t = data[i];
-            data[i] = data[word_size-i-1];
-            data[word_size-i-1] = t;
-        }
-        
-        data += word_size;
-    }
-}
 
 /************************************************************************/
 /*                               Usage()                                */
@@ -200,6 +169,7 @@ int main(int argc, char **argv) {
         /* force into LSB format */
         if( !IS_LSB ) 
         {
+            printf("S1 ");
             swap_words( header +  96, 8, 4 );
             swap_words( header + 128, 4, 2 );
             swap_words( ct.cvs, 4, ct.lim.lam * 2 * ct.lim.phi );
@@ -325,6 +295,7 @@ int main(int argc, char **argv) {
     
             if( !IS_LSB ) 
             {
+		printf("S0");
                 swap_words( achHeader +  4*16 + 8, 8, 1 );
                 swap_words( achHeader +  5*16 + 8, 8, 1 );
                 swap_words( achHeader +  6*16 + 8, 8, 1 );

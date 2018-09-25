@@ -31,6 +31,7 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "proj_internal.h"
 #include "projects.h"
 
 /************************************************************************/
@@ -177,3 +178,80 @@ void pj_get_spheroid_defn(projPJ defn, double *major_axis, double *eccentricity_
 	if ( eccentricity_squared )
 		*eccentricity_squared = defn->es;
 }
+
+/************************************************************************/
+/*                             swap_words()                             */
+/*                                                                      */
+/*      Convert the byte order of the given word(s) in place.           */
+/************************************************************************/
+
+void swap_words( void *data_in, int word_size, int word_count )
+{
+    int	word;
+    unsigned char *data = (unsigned char *) data_in;
+
+    for( word = 0; word < word_count; word++ )
+    {
+        int	i;
+        
+        for( i = 0; i < word_size/2; i++ )
+        {
+            unsigned char	t;
+            
+            t = data[i];
+            data[i] = data[word_size-i-1];
+            data[word_size-i-1] = t;
+        }
+        
+        data += word_size;
+    }
+}
+
+/* static void swap_words( unsigned char *data, int word_size, int word_count )
+
+{
+    int	word;
+
+    for( word = 0; word < word_count; word++ )
+    {
+        int	i;
+
+        for( i = 0; i < word_size/2; i++ )
+        {
+            unsigned char	t;
+
+            t = data[i];
+            data[i] = data[word_size-i-1];
+            data[word_size-i-1] = t;
+        }
+
+        data += word_size;
+    }
+}
+
+
+static void swap_words( void *data_in, int word_size, int word_count )
+
+{
+    int	word;
+    unsigned char *data = (unsigned char *) data_in;
+
+    for( word = 0; word < word_count; word++ )
+    {
+        int	i;
+        
+        for( i = 0; i < word_size/2; i++ )
+        {
+            unsigned char	t;
+            
+            t = data[i];
+            data[i] = data[word_size-i-1];
+            data[word_size-i-1] = t;
+        }
+        
+        data += word_size;
+    }
+}
+
+
+*/

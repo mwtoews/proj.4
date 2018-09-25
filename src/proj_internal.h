@@ -34,6 +34,7 @@
 
 #include <math.h>   /* For M_PI */
 #include <stddef.h>
+#include <stdint.h>
 
 #include "proj.h"
 
@@ -51,6 +52,8 @@ extern "C" {
 #endif
 
 #define STATIC_ASSERT(COND) ((void)sizeof(char[(COND) ? 1 : -1]))
+
+#define IS_LSB (*(const unsigned char *)&(uint16_t){1})
 
 #if !defined(HAVE_C99_MATH)
 #define HAVE_C99_MATH 0
@@ -119,6 +122,8 @@ void proj_fileapi_set (PJ *P, void *fileapi);
 
 const char * const *proj_get_searchpath(void);
 int    proj_get_path_count(void);
+
+void swap_words (void *data_in, int word_size, int word_count);
 
 #ifdef __cplusplus
 }

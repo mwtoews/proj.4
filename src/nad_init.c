@@ -33,39 +33,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "proj_internal.h"
 #include "projects.h"
-
-/************************************************************************/
-/*                             swap_words()                             */
-/*                                                                      */
-/*      Convert the byte order of the given word(s) in place.           */
-/************************************************************************/
-
-static const int  byte_order_test = 1;
-#define IS_LSB	(((const unsigned char *) (&byte_order_test))[0] == 1)
-
-static void swap_words( void *data_in, int word_size, int word_count )
-
-{
-    int	word;
-    unsigned char *data = (unsigned char *) data_in;
-
-    for( word = 0; word < word_count; word++ )
-    {
-        int	i;
-        
-        for( i = 0; i < word_size/2; i++ )
-        {
-            unsigned char	t;
-            
-            t = data[i];
-            data[i] = data[word_size-i-1];
-            data[word_size-i-1] = t;
-        }
-        
-        data += word_size;
-    }
-}
 
 /************************************************************************/
 /*                          nad_ctable_load()                           */
@@ -176,6 +145,7 @@ int nad_ctable2_load( projCtx ctx, struct CTABLE *ct, PAFile fid )
 
     if( !IS_LSB )
     {
+	printf("S2");
         swap_words( ct->cvs, 4, (int)a_size * 2 );
     }
 
@@ -202,6 +172,7 @@ struct CTABLE *nad_ctable2_init( projCtx ctx, PAFile fid )
 
     if( !IS_LSB )
     {
+	printf("S3");
         swap_words( header +  96, 8, 4 );
         swap_words( header + 128, 4, 2 );
     }

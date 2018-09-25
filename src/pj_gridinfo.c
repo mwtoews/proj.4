@@ -38,36 +38,6 @@
 #include "proj_internal.h"
 #include "projects.h"
 
-/************************************************************************/
-/*                             swap_words()                             */
-/*                                                                      */
-/*      Convert the byte order of the given word(s) in place.           */
-/************************************************************************/
-
-static const int  byte_order_test = 1;
-#define IS_LSB	(1 == ((const unsigned char *) (&byte_order_test))[0])
-
-static void swap_words( unsigned char *data, int word_size, int word_count )
-
-{
-    int	word;
-
-    for( word = 0; word < word_count; word++ )
-    {
-        int	i;
-
-        for( i = 0; i < word_size/2; i++ )
-        {
-            unsigned char	t;
-
-            t = data[i];
-            data[i] = data[word_size-i-1];
-            data[word_size-i-1] = t;
-        }
-
-        data += word_size;
-    }
-}
 
 /************************************************************************/
 /*                             to_double()                              */
@@ -244,8 +214,10 @@ int pj_gridinfo_load( projCtx ctx, PJ_GRIDINFO *gi )
                 return 0;
             }
 
-            if( IS_LSB )
+            if( IS_LSB ) {
+		printf("G1");
                 swap_words( (unsigned char *) row_buf, 8, gi->ct->lim.lam*2 );
+	}
 
             /* convert seconds to radians */
             diff_seconds = row_buf;
@@ -325,9 +297,11 @@ int pj_gridinfo_load( projCtx ctx, PJ_GRIDINFO *gi )
                 return 0;
             }
 
-            if( gi->must_swap )
+            if( gi->must_swap ) {
+		printf("G2");
                 swap_words( (unsigned char *) row_buf, 4,
                             gi->ct->lim.lam*4 );
+		}
 
             /* convert seconds to radians */
             diff_seconds = row_buf;
@@ -389,8 +363,10 @@ int pj_gridinfo_load( projCtx ctx, PJ_GRIDINFO *gi )
             return 0;
         }
 
-        if( IS_LSB )
+        if( IS_LSB ) {
+		printf("G3");
             swap_words( (unsigned char *) ct_tmp.cvs, 4, words );
+	}
 
         pj_ctx_fclose( ctx, fid );
         gi->ct->cvs = ct_tmp.cvs;
@@ -463,6 +439,7 @@ static int pj_gridinfo_init_ntv2( projCtx ctx, PAFile fid, PJ_GRIDINFO *gilist )
 /* -------------------------------------------------------------------- */
     if( must_swap )
     {
+	printf("G5");
         swap_words( header+8, 4, 1 );
         swap_words( header+8+16, 4, 1 );
         swap_words( header+8+32, 4, 1 );
@@ -507,6 +484,7 @@ static int pj_gridinfo_init_ntv2( projCtx ctx, PAFile fid, PJ_GRIDINFO *gilist )
 /* -------------------------------------------------------------------- */
         if( must_swap )
         {
+		printf("G6");
             swap_words( header+8+16*4, 8, 1 );
             swap_words( header+8+16*5, 8, 1 );
             swap_words( header+8+16*6, 8, 1 );
@@ -683,6 +661,7 @@ static int pj_gridinfo_init_ntv1( projCtx ctx, PAFile fid, PJ_GRIDINFO *gi )
 /* -------------------------------------------------------------------- */
     if( IS_LSB )
     {
+	printf("G7");
         swap_words( header+8, 4, 1 );
         swap_words( header+24, 8, 1 );
         swap_words( header+40, 8, 1 );
@@ -770,6 +749,7 @@ static int pj_gridinfo_init_gtx( projCtx ctx, PAFile fid, PJ_GRIDINFO *gi )
 /* -------------------------------------------------------------------- */
     if( IS_LSB )
     {
+	printf("G8");
         swap_words( header+0, 8, 4 );
         swap_words( header+32, 4, 2 );
     }
