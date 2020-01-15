@@ -16,6 +16,14 @@ import sys
 import os
 import datetime
 
+if sys.platform.startswith('linux'):
+    if os.path.isfile('Makefile'):
+        print('bah1')
+        os.system('make .doxygen_up_to_date')
+    elif os.path.isfile('../Makefile'):
+        print('bah2')
+        os.system('cd .. && make .doxygen_up_to_date && cd source')
+
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
