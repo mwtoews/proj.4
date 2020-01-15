@@ -1,0 +1,4 @@
+sphinx>2.0
+sphinx-rtd-theme
+sphinxcontrib-bibtex
+breathe
