@@ -127,9 +127,9 @@ endif()
 
 # Would build and run with older versons, but with horrible performance
 # See https://github.com/OSGeo/PROJ/issues/1718
-IF("${SQLITE3_VERSION}" VERSION_LESS "3.11")
-  message(SEND_ERROR "sqlite3 >= 3.11 required!")
-ENDIF()
+#IF("${SQLITE3_VERSION}" VERSION_LESS "3.11")
+#  message(SEND_ERROR "sqlite3 >= 3.11 required!")
+#ENDIF()
 
 ################################################################################
 # Check for libtiff
