@@ -52,6 +52,8 @@ make -j2
 make install
 make dist-all
 find /tmp/proj_autoconf_install
+# TODO: support pkg-config
+# $TRAVIS_BUILD_DIR/travis/postinstall/test_pkg-config.sh /tmp/proj_autoconf_install
 (cd test; make -j2)
 cp -r ../data/tests /tmp/proj_autoconf_install/share/proj
 cp ../data/tests/egm96_15_downsampled.gtx /tmp/proj_autoconf_install/share/proj/egm96_15.gtx
