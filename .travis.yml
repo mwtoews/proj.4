@@ -1,5 +1,5 @@
 # This is the config file for building proj and running its test suite
-# with Travis-ci.org
+# with Travis-ci.com
 language: cpp
 
 branches:
@@ -10,7 +10,7 @@ cache:
     directories:
         - $HOME/.ccache
 
-matrix:
+jobs:
   fast_finish: true
   include:
 
@@ -70,6 +70,19 @@ matrix:
       env:
         - BUILD_NAME=mingw32
         - DETAILS="mingw32"
+
+    - os: linux
+      dist: xenial
+      compiler: gcc
+      env:
+        - BUILD_NAME=linux_gcc4.8
+        - DETAILS="linux, gcc-4.8"
+        - CC=gcc-4.8
+        - CXX=g++-4.8
+      addons:
+        apt:
+          packages:
+            - g++-4.8
 
     - os: linux
       compiler: gcc
